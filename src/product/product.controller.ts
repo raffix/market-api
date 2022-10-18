@@ -1,5 +1,11 @@
-import { Controller, Get, Param, ParseIntPipe } from "@nestjs/common";
-import { ProductService } from "./product.service";
+import {
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { ProductService } from './product.service';
 
 @Controller('products')
 export class ProductController {
@@ -7,6 +13,9 @@ export class ProductController {
 
   @Get(':id')
   show(@Param('id', ParseIntPipe) id: number) {
-    return this.productService.findOne(id);
+    const product = this.productService.findOne(id);
+    if (product) return product;
+
+    throw new HttpException('product does not exist', 404);
   }
 }

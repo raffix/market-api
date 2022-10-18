@@ -8,4 +8,3 @@ import { ProductModule } from './product/product.module';
   imports: [CustomerModule, HttpModule, MultipleModule, ProductModule],
 })
 export class AppModule {}
- 

@@ -14,7 +14,7 @@ export class ProductService {
     {id: 8, name: 'Chocolate', price: 2.00}
   ];
 
-  findOne(id: number) {
+  findOne(id: number): Product {
     return this.products.find( product => {
       return product.id === id
     });

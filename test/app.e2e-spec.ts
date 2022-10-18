@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 
@@ -9,11 +9,11 @@ describe('AppModule (e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    })
-      .compile();
+    }).compile();
 
     app = moduleRef.createNestApplication();
-    await app.init();
+    app.useGlobalPipes(new ValidationPipe())
+    await app.listen(3000);
   });
 
   describe('CustomerModule (e2e)', () => {
@@ -61,7 +61,12 @@ describe('AppModule (e2e)', () => {
     it(`/GET multiple two items`, () => {
       return request(app.getHttpServer())
       .get('/multiple?liam=/customers/1&olivia=/customers/5&ketchup=/products/2')
-      .expect(200);
+      .expect(200)
+      .expect({
+        liam: { id: 1, name: 'Liam', age: 33 },
+        olivia: { id: 5, name: 'Olivia', age: 31 },
+        ketchup: { id: 2, name: 'Ketchup', price: 4 }
+      });
     })
   });
 

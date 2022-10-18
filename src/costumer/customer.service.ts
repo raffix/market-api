@@ -14,7 +14,7 @@ export class CustomerService {
     {id: 8, name: 'Amelia', age: 60}
   ];
 
-  findOne(id: number) {
+  findOne(id: number): Customer {
     return this.customers.find( customer => {
       return customer.id === id
     });
